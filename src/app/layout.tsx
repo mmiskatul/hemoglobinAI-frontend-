@@ -40,6 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${plusJakarta.variable} ${outfit.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans bg-slate-50 text-slate-900 flex flex-col">
