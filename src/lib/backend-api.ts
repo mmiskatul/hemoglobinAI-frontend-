@@ -69,9 +69,19 @@ export const sectionApi = {
 };
 
 export type BangladeshLocation = { id: string; name: string; bn_name?: string };
+const PUBLIC_LOCATION_API = "https://bdapis.pro.bd/geo/v2.0";
+async function locationRequest(path: string) {
+  try {
+    return await backendRequest<{ data: BangladeshLocation[] }>(`/locations${path}`);
+  } catch {
+    const response = await fetch(PUBLIC_LOCATION_API + path);
+    if (!response.ok) throw new Error("Bangladesh location data is unavailable");
+    return response.json() as Promise<{ data: BangladeshLocation[] }>;
+  }
+}
 export const locationApi = {
-  divisions: () => backendRequest<{ data: BangladeshLocation[] }>("/locations/divisions"),
-  districts: (divisionId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/districts/${divisionId}`),
-  upazilas: (districtId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/upazilas/${districtId}`),
-  unions: (upazilaId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/unions/${upazilaId}`),
+  divisions: () => locationRequest("/divisions"),
+  districts: (divisionId: string) => locationRequest(`/districts/${divisionId}`),
+  upazilas: (districtId: string) => locationRequest(`/upazilas/${districtId}`),
+  unions: (upazilaId: string) => locationRequest(`/unions/${upazilaId}`),
 };
