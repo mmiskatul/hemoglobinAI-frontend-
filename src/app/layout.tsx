@@ -32,10 +32,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal?: React.ReactNode;
 }>) {
   return (
     <html
@@ -45,7 +43,6 @@ export default function RootLayout({
     >
       <body className="min-h-full font-sans bg-slate-50 text-slate-900 flex flex-col">
         <DashboardAuthGuard>{children}</DashboardAuthGuard>
-        {modal}
         <DashboardAssistant dashboard="global" />
       </body>
     </html>
