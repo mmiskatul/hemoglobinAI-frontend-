@@ -9,7 +9,7 @@ const protectedRoutes = [
   "/donor",
   "/hospital",
   "/courier",
-  "/agent",
+  "/admin",
 ];
 
 export default function DashboardAuthGuard({ children }: { children: ReactNode }) {
@@ -28,7 +28,13 @@ export default function DashboardAuthGuard({ children }: { children: ReactNode }
       router.replace("/login?next=" + encodeURIComponent(pathname));
       return;
     }
-    authApi.me().then(() => setChecked(true)).catch(() => {
+    authApi.me().then((profile) => {
+      if (pathname.startsWith("/admin") && profile.role !== "agent") {
+        router.replace("/requester");
+        return;
+      }
+      setChecked(true);
+    }).catch(() => {
       window.localStorage.removeItem("hemoglobin_access_token");
       window.localStorage.removeItem("hemoglobin_refresh_token");
       router.replace("/login?next=" + encodeURIComponent(pathname));

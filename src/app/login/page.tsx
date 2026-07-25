@@ -28,7 +28,7 @@ export default function LoginPage() {
       if (mode === "verify") {
         const result = await authApi.verifyEmail(email, code); storeTokens(result);
         const profile = await authApi.me();
-        window.location.href = profile.role === "agent" ? "/agent" : profile.role === "hospital" ? "/hospital" : profile.role === "donor" ? "/donor" : "/requester"; return;
+        window.location.href = profile.role === "agent" ? "/admin" : profile.role === "hospital" ? "/hospital" : profile.role === "donor" ? "/donor" : "/requester"; return;
       }
       if (mode === "forgot") {
         await authApi.forgotPassword(email); setMode("reset"); setMessage("If the email exists, a reset code was sent."); return;
@@ -38,7 +38,7 @@ export default function LoginPage() {
       }
       const result = await authApi.login(email, password); storeTokens(result);
       const profile = await authApi.me();
-      window.location.href = profile.role === "agent" ? "/agent" : profile.role === "hospital" ? "/hospital" : profile.role === "donor" ? "/donor" : "/requester";
+      window.location.href = profile.role === "agent" ? "/admin" : profile.role === "hospital" ? "/hospital" : profile.role === "donor" ? "/donor" : "/requester";
     } catch (error) {
       const text = error instanceof Error ? error.message : "Authentication failed.";
       setMessage(text);
