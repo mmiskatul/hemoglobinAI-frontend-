@@ -30,7 +30,11 @@ export default function DashboardAuthGuard({ children }: { children: ReactNode }
       router.replace("/login?next=" + encodeURIComponent(pathname));
       return;
     }
-    setChecked(true);
+    authApi.me().then(() => setChecked(true)).catch(() => {
+      window.localStorage.removeItem("hemoglobin_access_token");
+      window.localStorage.removeItem("hemoglobin_refresh_token");
+      router.replace("/login?next=" + encodeURIComponent(pathname));
+    });
   }, [pathname, requiresAuth, router]);
 
   if (requiresAuth && !checked) {
