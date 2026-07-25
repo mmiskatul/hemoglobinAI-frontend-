@@ -9,9 +9,6 @@ const protectedRoutes = [
   "/donor",
   "/hospital",
   "/courier",
-  "/control-room",
-  "/ledger",
-  "/simulations",
 ];
 
 export default function DashboardAuthGuard({ children }: { children: ReactNode }) {

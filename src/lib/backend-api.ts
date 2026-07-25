@@ -65,8 +65,5 @@ export const sectionApi = {
   hospitalOrder: (payload: Record<string, unknown>) => backendRequest("/hospitals/orders", { method: "POST", body: JSON.stringify({ metadata: payload }) }),
   hospitalBroadcast: (payload: Record<string, unknown>) => backendRequest("/hospitals/broadcasts", { method: "POST", body: JSON.stringify({ metadata: payload }) }),
   courierComplete: (taskId: string, proof: Record<string, unknown>) => backendRequest("/courier/tasks/" + taskId + "/complete", { method: "POST", body: JSON.stringify({ metadata: proof }) }),
-  simulation: (payload: Record<string, unknown>) => backendRequest("/simulations/run", { method: "POST", body: JSON.stringify(payload) }),
-  ledger: (recordId: string) => backendRequest("/ledger/" + encodeURIComponent(recordId)),
-  controlRoomLog: (value: string) => backendRequest("/control-room/logs", { method: "POST", body: JSON.stringify({ value }) }),
   vitals: (payload: Record<string, unknown>) => backendRequest("/requester/vitals", { method: "POST", body: JSON.stringify(payload) }),
 };

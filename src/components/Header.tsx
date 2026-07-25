@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Bell, HeartHandshake, Settings, Menu, X, Globe, FileText } from "lucide-react";
+import { Bell, HeartHandshake, Menu, X } from "lucide-react";
 
 interface HeaderProps {
   onOpenEmergency: () => void;
@@ -142,15 +142,6 @@ export default function Header({ onOpenEmergency }: HeaderProps) {
             )}
           </div>
 
-          <Link href="/ledger" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="Ledger Audit Explorer">
-            <FileText className="h-[20px] w-[20px]" />
-          </Link>
-          <Link href="/simulations" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="AI Simulations Sandbox">
-            <Settings className="h-[20px] w-[20px]" />
-          </Link>
-          <Link href="/control-room" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="GIS Command Center HUD">
-            <Globe className="h-[20px] w-[20px]" />
-          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -233,15 +224,6 @@ export default function Header({ onOpenEmergency }: HeaderProps) {
               )}
 
               <div className="flex items-center gap-4 pt-2">
-                <Link href="/ledger" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="Ledger Audit Explorer">
-                  <FileText className="h-5 w-5" />
-                </Link>
-                <Link href="/simulations" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="AI Simulations Sandbox">
-                  <Settings className="h-5 w-5" />
-                </Link>
-                <Link href="/control-room" className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors cursor-pointer flex items-center justify-center font-sans" title="GIS Command Center HUD">
-                  <Globe className="h-5 w-5" />
-                </Link>
               </div>
             </div>
           </nav>

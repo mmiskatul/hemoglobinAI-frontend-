@@ -44,9 +44,6 @@ export default function Footer() {
               Advanced AI
             </span>
             <ul className="flex flex-col gap-3 text-sm font-semibold text-slate-400">
-              <li><Link href="/control-room" className="hover:text-white transition-colors">GIS Control Room</Link></li>
-              <li><Link href="/simulations" className="hover:text-white transition-colors">AI Simulations</Link></li>
-              <li><Link href="/ledger" className="hover:text-white transition-colors">Ledger Explorer</Link></li>
             </ul>
           </div>
 
