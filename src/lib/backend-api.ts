@@ -67,3 +67,11 @@ export const sectionApi = {
   courierComplete: (taskId: string, proof: Record<string, unknown>) => backendRequest("/courier/tasks/" + taskId + "/complete", { method: "POST", body: JSON.stringify({ metadata: proof }) }),
   vitals: (payload: Record<string, unknown>) => backendRequest("/requester/vitals", { method: "POST", body: JSON.stringify(payload) }),
 };
+
+export type BangladeshLocation = { id: string; name: string; bn_name?: string };
+export const locationApi = {
+  divisions: () => backendRequest<{ data: BangladeshLocation[] }>("/locations/divisions"),
+  districts: (divisionId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/districts/${divisionId}`),
+  upazilas: (districtId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/upazilas/${districtId}`),
+  unions: (upazilaId: string) => backendRequest<{ data: BangladeshLocation[] }>(`/locations/unions/${upazilaId}`),
+};
