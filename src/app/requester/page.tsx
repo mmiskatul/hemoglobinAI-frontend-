@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { sectionApi } from "@/lib/backend-api";
+import { authApi, sectionApi } from "@/lib/backend-api";
 import {
   LayoutDashboard,
   Users,
@@ -92,6 +92,7 @@ interface ActivityLog {
 }
 
 export default function RequesterDashboard() {
+  const [userProfile, setUserProfile] = useState<{ name: string; email: string; profile?: Record<string, unknown> } | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"Dashboard" | "Requests" | "Tracking" | "Support">("Dashboard");
 
@@ -101,6 +102,12 @@ export default function RequesterDashboard() {
   const [formHospital, setFormHospital] = useState("St. Jude Medical Center");
   const [formUnits, setFormUnits] = useState(2);
   const [formUrgency, setFormUrgency] = useState("URGENT");
+  useEffect(() => { authApi.me().then(setUserProfile).catch(() => undefined); }, []);
+  const userName = userProfile?.name || "User";
+  const userInitials = userName.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase() || "U";
+  const userBloodType = String(userProfile?.profile?.blood_type || "—");
+  const userLocation = ["division", "district", "upazila", "union"].map(key => userProfile?.profile?.[key]).filter(Boolean).join(", ") || "Location not added";
+  const userImage = typeof userProfile?.profile?.image_url === "string" ? userProfile.profile.image_url : "";
 
   // Matching Simulation State inside New Request Modal
   const [isSimulatingMatch, setIsSimulatingMatch] = useState(false);
@@ -292,9 +299,9 @@ export default function RequesterDashboard() {
               🏥
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-xs font-bold text-slate-800 font-sans">Patient Portal</span>
+              <span className="text-xs font-bold text-slate-800 font-sans">{userName}</span>
               <span className="text-[10px] font-semibold text-slate-400 mt-0.5 font-sans leading-none font-mono">
-                ID: #44892-RT
+                {userBloodType !== "—" ? `${userBloodType} · ` : ""}{userLocation}
               </span>
             </div>
           </div>
@@ -390,10 +397,10 @@ export default function RequesterDashboard() {
               <HelpCircle className="h-5 w-5" />
             </button>
             <div className="flex items-center gap-2 cursor-pointer">
-              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-700 border border-slate-200">
-                SC
+              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-700 border border-slate-200 overflow-hidden">
+                {userImage ? <img src={userImage} alt={userName} className="h-full w-full object-cover" /> : userInitials}
               </div>
-              <span className="hidden sm:inline text-xs font-bold text-slate-700 font-sans">Sarah Chen</span>
+              <span className="hidden sm:inline text-xs font-bold text-slate-700 font-sans">{userName}</span>
             </div>
           </div>
 
@@ -409,7 +416,7 @@ export default function RequesterDashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 font-sans">
               <div className="text-left font-sans">
                 <h1 className="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Welcome back, Sarah
+                  Welcome back, {userName}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-semibold leading-relaxed mt-1">
                   Your active requests are being processed by our AI network.
