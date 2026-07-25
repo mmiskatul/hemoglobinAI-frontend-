@@ -53,6 +53,7 @@ export const authApi = {
   login: (email: string, password: string) => backendRequest<TokenResponse>("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
   register: (payload: { name: string; email: string; password: string; role: string; details: Record<string, string> }) => backendRequest<{ verification_required: boolean; email: string; message: string }>("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
   verifyEmail: (email: string, code: string) => backendRequest<TokenResponse>("/auth/verify-email", { method: "POST", body: JSON.stringify({ email, code }) }),
+  resendVerification: (email: string) => backendRequest<{ message: string }>("/auth/resend-verification", { method: "POST", body: JSON.stringify({ email }) }),
   refresh: () => refreshAccessToken(),
   forgotPassword: (email: string) => backendRequest<{ message: string }>("/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) }),
   resetPassword: (email: string, code: string, password: string) => backendRequest<{ message: string }>("/auth/reset-password", { method: "POST", body: JSON.stringify({ email, code, password }) }),
