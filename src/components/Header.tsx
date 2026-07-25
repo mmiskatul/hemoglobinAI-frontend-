@@ -142,6 +142,10 @@ export default function Header({ onOpenEmergency }: HeaderProps) {
             )}
           </div>
 
+          <Link href="/login" className="rounded-xl bg-red-600 px-4 py-2 text-xs font-extrabold text-white shadow-sm transition-colors hover:bg-red-700">
+            Login
+          </Link>
+
         </div>
 
         {/* Mobile Menu Button */}
@@ -190,6 +194,10 @@ export default function Header({ onOpenEmergency }: HeaderProps) {
                   <span className="h-2 w-2 bg-red-600 rounded-full animate-pulse" />
                 )}
               </button>
+
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="w-full rounded-xl bg-red-600 px-4 py-3 text-center text-sm font-extrabold text-white hover:bg-red-700">
+                Login
+              </Link>
 
               {notificationsOpen && (
                 <div className="flex flex-col gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-left">
