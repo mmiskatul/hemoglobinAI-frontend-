@@ -40,8 +40,11 @@ export default function DashboardAssistant({ dashboard = "dashboard" }: Dashboar
     setMessages((current) => [...current, { role: "user", content: text }]);
     setBusy(true);
     try {
-      const result = await agentApi.chat(text, dashboard, conversationId);
-      setConversationId(result.conversation_id);
+      const hasToken = Boolean(window.localStorage.getItem("hemoglobin_access_token"));
+      const result: { message: string; conversation_id?: string } = hasToken
+        ? await agentApi.chat(text, dashboard, conversationId)
+        : await agentApi.publicChat(text, dashboard);
+      if ("conversation_id" in result) setConversationId(result.conversation_id);
       setMessages((current) => [...current, { role: "assistant", content: result.message }]);
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();

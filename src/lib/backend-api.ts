@@ -19,6 +19,7 @@ export async function backendRequest<T>(path: string, init: RequestInit = {}): P
 }
 
 export const agentApi = {
+  publicChat: (message: string, dashboard: string) => backendRequest<{ message: string }>("/agent/public-chat", { method: "POST", body: JSON.stringify({ message, dashboard }) }),
   chat: (message: string, dashboard: string, conversationId?: string) => backendRequest<{ conversation_id: string; message: string }>("/agent/chat", { method: "POST", body: JSON.stringify({ message, dashboard, conversation_id: conversationId }) }),
 };
 
