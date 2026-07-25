@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import DashboardAssistant from "@/components/DashboardAssistant";
+import DashboardAuthGuard from "@/components/DashboardAuthGuard";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -42,7 +43,7 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${outfit.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans bg-slate-50 text-slate-900 flex flex-col">
-        {children}
+        <DashboardAuthGuard>{children}</DashboardAuthGuard>
         {modal}
         <DashboardAssistant dashboard="global" />
       </body>

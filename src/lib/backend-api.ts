@@ -24,6 +24,7 @@ export const agentApi = {
 };
 
 export const authApi = {
+  me: () => backendRequest<{ id: string; name: string; email: string; role: string }>("/auth/me"),
   login: (email: string, password: string) => backendRequest<{ access_token: string }>("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
   register: (payload: { name: string; email: string; password: string; role: string }) => backendRequest<{ access_token: string }>("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
 };
