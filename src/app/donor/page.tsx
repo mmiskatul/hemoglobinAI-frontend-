@@ -48,6 +48,7 @@ import {
 } from "lucide-react";
 import RequestModal from "@/components/RequestModal";
 import DonorModal from "@/components/DonorModal";
+import { authApi } from "@/lib/backend-api";
 
 interface Session {
   id: string;
@@ -89,6 +90,7 @@ interface NetworkDonor {
 }
 
 export default function Dashboard() {
+  const [userProfile, setUserProfile] = useState<{ name: string; email: string; profile?: Record<string, unknown> } | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [activeSubTab, setActiveSubTab] = useState<"Dashboard" | "Network" | "Logistics" | "Profile" | "Settings">("Dashboard");
@@ -111,6 +113,13 @@ export default function Dashboard() {
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [premiumAnonymization, setPremiumAnonymization] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => { authApi.me().then(setUserProfile).catch(() => undefined); }, []);
+  const userName = userProfile?.name || "User";
+  const userInitials = userName.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase() || "U";
+  const userBloodType = String(userProfile?.profile?.blood_type || "—");
+  const userLocation = ["division", "district", "upazila", "union"].map(key => userProfile?.profile?.[key]).filter(Boolean).join(", ") || "Location not added";
+  const userImage = typeof userProfile?.profile?.image_url === "string" ? userProfile.profile.image_url : "";
 
   // Logistics specific states
   const [mixAdjusted, setMixAdjusted] = useState(false);
@@ -262,12 +271,12 @@ export default function Dashboard() {
                 : "bg-slate-50 hover:bg-slate-100 border-slate-100"
             }`}
           >
-            <div className="h-10 w-10 rounded-full bg-red-600/10 text-red-600 flex items-center justify-center font-bold font-outfit shadow-sm relative">
-              SC
+            <div className="h-10 w-10 rounded-full bg-red-600/10 text-red-600 flex items-center justify-center font-bold font-outfit shadow-sm relative overflow-hidden">
+              {userImage ? <img src={userImage} alt={userName} className="h-full w-full object-cover" /> : userInitials}
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-white animate-pulse" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-xs font-bold text-slate-800 font-sans">Dr. Sarah Chen</span>
+              <span className="text-xs font-bold text-slate-800 font-sans">{userName}</span>
               <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">
                 Senior Hematologist
               </span>
@@ -403,10 +412,10 @@ export default function Dashboard() {
               }}
               className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             >
-              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-700 shadow-inner border border-slate-200">
-                SC
+              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-700 shadow-inner border border-slate-200 overflow-hidden">
+                {userImage ? <img src={userImage} alt={userName} className="h-full w-full object-cover" /> : userInitials}
               </div>
-              <span className="hidden sm:inline text-xs font-bold text-slate-700 font-sans">Dr. Sarah Chen</span>
+              <span className="hidden sm:inline text-xs font-bold text-slate-700 font-sans">{userName}</span>
             </button>
           </div>
 
@@ -796,18 +805,18 @@ export default function Dashboard() {
               
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-                  <div className="relative h-24 w-24 shrink-0 rounded-full border-4 border-white shadow-xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center font-outfit text-3xl font-extrabold text-slate-700">
-                    MT
+                  <div className="relative h-24 w-24 shrink-0 rounded-full border-4 border-white shadow-xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center font-outfit text-3xl font-extrabold text-slate-700 overflow-hidden">
+                    {userImage ? <img src={userImage} alt={userName} className="h-full w-full object-cover" /> : userInitials}
                     <span className="absolute bottom-1 right-1 h-5 w-5 bg-emerald-500 rounded-full border-4 border-white animate-pulse" />
                   </div>
                   
                   <div className="flex flex-col text-center sm:text-left">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
                       <h1 className="font-outfit text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Marcus Thompson
+                        {userName}
                       </h1>
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white text-xs font-black font-outfit shadow-sm shadow-red-600/30 shrink-0 self-center sm:self-auto">
-                        O-
+                        {userBloodType}
                       </span>
                     </div>
 
@@ -822,7 +831,7 @@ export default function Dashboard() {
                       </span>
                       <span className="inline-flex items-center gap-1 rounded-lg bg-slate-50 border border-slate-200/50 px-2.5 py-1 text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
                         <MapPin className="h-3 w-3" />
-                        Seattle, WA
+                        {userLocation}
                       </span>
                     </div>
                   </div>

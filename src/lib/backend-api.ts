@@ -49,7 +49,7 @@ export const agentApi = {
 };
 
 export const authApi = {
-  me: () => backendRequest<{ id: string; name: string; email: string; role: string }>("/auth/me"),
+  me: () => backendRequest<{ id: string; name: string; email: string; role: string; profile?: Record<string, unknown> }>("/auth/me"),
   login: (email: string, password: string) => backendRequest<TokenResponse>("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
   register: (payload: { name: string; email: string; password: string; role: string; details: Record<string, string> }) => backendRequest<{ verification_required: boolean; email: string; message: string }>("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
   verifyEmail: (email: string, code: string) => backendRequest<TokenResponse>("/auth/verify-email", { method: "POST", body: JSON.stringify({ email, code }) }),
