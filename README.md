@@ -1,37 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hemoglobin AI Frontend
 
-## Getting Started
+Next.js frontend for the Hemoglobin AI blood logistics platform.
 
-First, run the development server:
+## Features
+
+- Public emergency blood request experience
+- Requester, donor, hospital, courier, ledger, simulation, and control-room dashboards
+- JWT login and registration at `/login`
+- Shared text and voice dashboard AI assistant
+- Browser speech-to-text and spoken AI responses
+- Backend API client with server-side OpenAI, MongoDB, Pinecone, SMTP, and map integrations
+
+## Local development
+
+From this directory:
 
 ```bash
+npm install
+copy .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Set `NEXT_PUBLIC_API_URL` in `.env.local` to the FastAPI URL:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+NEXT_PUBLIC_MAP_PROVIDER=mapbox
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_public_mapbox_token
+```
 
-## Learn More
+Only public browser-safe values may be placed in frontend environment files. Never add MongoDB, JWT, OpenAI, Pinecone, SMTP, or private map download tokens here.
 
-To learn more about Next.js, take a look at the following resources:
+## Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The Dockerfile uses Next.js standalone output. Build it with:
 
-## Deploy on Vercel
+```bash
+docker build -t hemoglobin-ai-frontend .
+docker run --env-file .env.local -p 3000:3000 hemoglobin-ai-frontend
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# hemoglobinAI-frontend-
+The frontend expects the backend repository to be running separately.
